@@ -1,0 +1,24 @@
+{
+  "name": "pccomponentes/criteria-array-adapter",
+  "description": "Adapter for array for implement filter/criteria pattern",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^7.4",
+    "pccomponentes/criteria": "^0.1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "PcComponentes\\CriteriaArrayAdapter\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PcComponentes\\CriteriaDBALAdapter\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.2",
+    "fzaninotto/faker": "^1.9"
+  }
+}
