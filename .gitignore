@@ -17,6 +17,7 @@ Thumbs.db
 
 # Composer
 /vendor/
+/composer.lock
 
 ###> phpunit/phpunit ###
 /phpunit.xml
