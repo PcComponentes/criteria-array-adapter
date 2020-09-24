@@ -1,6 +1,7 @@
 <?php
+declare(strict_types=1);
 
-namespace PcComponentes\CriteriaDBALAdapter\Tests\Mocks;
+namespace PcComponentes\CriteriaArrayAdapter\Tests\Mocks;
 
 use PcComponentes\CriteriaArrayAdapter\ArrayCriteriaVisitor;
 use Pccomponentes\Criteria\Domain\Criteria\Criteria;
@@ -17,6 +18,7 @@ class MemoryArticleRepository
     public function filter(Criteria $criteria): array
     {
         $filter = new ArrayCriteriaVisitor($this->users);
+
         return $filter($criteria);
     }
 }

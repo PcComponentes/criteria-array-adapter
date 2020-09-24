@@ -1,4 +1,24 @@
+# phpstorm project files
+.idea
+
+# netbeans project files
+nbproject/*
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# windows thumbnail cache
+Thumbs.db
+
+# Mac DS_Store Files
+.DS_Store
+
+# Composer
 /vendor/
-/.idea/
-/vendor/
+
+###> phpunit/phpunit ###
+/phpunit.xml
 .phpunit.result.cache
+###< phpunit/phpunit ###

@@ -42,7 +42,35 @@ class ArrayCriteriaVisitor implements FilterVisitorInterface
 
     public function visitFilter(Filter $filter)
     {
-        return \array_filter($this->dataSet, $this->filter($filter));
+        return \array_filter(
+            $this->dataSet,
+            static function ($item) use ($filter) {
+                if (\method_exists($item, $filter->field()->value())) {
+                    $field = $filter->field()->value();
+                    $itemValue = \method_exists($item->$field(), 'value')
+                        ? $item->$field()->value()
+                        : $item->$field();
+
+                    if (FilterOperator::EQUAL === $filter->operator()->value()) {
+                        return $itemValue == self::cast($itemValue, $filter->value()->value());
+                    }
+
+                    if (FilterOperator::GT === $filter->operator()->value()) {
+                        return $itemValue > self::cast($itemValue, $filter->value()->value());
+                    }
+
+                    if (FilterOperator::LT === $filter->operator()->value()) {
+                        return $itemValue < self::cast($itemValue, $filter->value()->value());
+                    }
+
+                    if (FilterOperator::CONTAINS === $filter->operator()->value()) {
+                        return false !== \strpos($itemValue, $filter->value()->value());
+                    }
+                }
+
+                return false;
+            },
+        );
     }
 
     private static function cast($type, $value)
@@ -55,36 +83,6 @@ class ArrayCriteriaVisitor implements FilterVisitorInterface
         \settype($castedValue, \gettype($type));
 
         return $castedValue;
-    }
-
-    private function filter(Filter $filter): callable
-    {
-        return static function ($item) use ($filter) {
-            if (\method_exists($item, $filter->field()->value())) {
-                $field = $filter->field()->value();
-                $itemValue = \method_exists($item->$field(), 'value')
-                    ? $item->$field()->value()
-                    : $item->$field();
-
-                if (FilterOperator::EQUAL === $filter->operator()->value()) {
-                    return $itemValue ==  self::cast($itemValue, $filter->value()->value());
-                }
-
-                if (FilterOperator::GT === $filter->operator()->value()) {
-                    return $itemValue > self::cast($itemValue, $filter->value()->value());
-                }
-
-                if (FilterOperator::LT === $filter->operator()->value()) {
-                    return $itemValue < self::cast($itemValue, $filter->value()->value());
-                }
-
-                if (FilterOperator::CONTAINS === $filter->operator()->value()) {
-                    return false !== strpos( $itemValue, $filter->value()->value());
-                }
-            }
-
-            return false;
-        };
     }
 
     private function intersect(array $firstArray, array $secondArray): array

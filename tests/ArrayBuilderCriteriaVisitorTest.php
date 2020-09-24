@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 
-namespace PcComponentes\CriteriaDBALAdapter\Tests;
+namespace PcComponentes\CriteriaArrayAdapter\Tests;
 
-use PcComponentes\CriteriaDBALAdapter\Tests\Mocks\MemoryArticleRepository;
-use PcComponentes\CriteriaDBALAdapter\Tests\Mocks\Article;
-use PcComponentes\CriteriaDBALAdapter\Tests\Mocks\ArticleObjectMother;
+use PcComponentes\CriteriaArrayAdapter\Tests\Mocks\MemoryArticleRepository;
+use PcComponentes\CriteriaArrayAdapter\Tests\Mocks\ArticleObjectMother;
 use Pccomponentes\Criteria\Domain\Criteria\AndFilter;
 use Pccomponentes\Criteria\Domain\Criteria\Criteria;
 use Pccomponentes\Criteria\Domain\Criteria\Filter;
@@ -18,12 +18,12 @@ use PHPUnit\Framework\TestCase;
 
 class ArrayBuilderCriteriaVisitorTest extends TestCase
 {
-
     private MemoryArticleRepository $repository;
 
     public function setUp(): void
     {
         $this->repository = new MemoryArticleRepository();
+
         parent::setUp();
     }
 
@@ -64,7 +64,7 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
                 new Filter(
                     FilterField::from('stock'),
                     FilterOperator::from(FilterOperator::EQUAL),
-                    FilterValue::from($article->stock()),
+                    FilterValue::from((string) $article->stock()),
                 ),
             ),
             null,
@@ -92,7 +92,7 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
                     new Filter(
                         FilterField::from('stock'),
                         FilterOperator::from(FilterOperator::EQUAL),
-                        FilterValue::from($article->stock()),
+                        FilterValue::from((string) $article->stock()),
                     ),
                 ),
             ),
@@ -121,7 +121,7 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
                     new Filter(
                         FilterField::from('stock'),
                         FilterOperator::from(FilterOperator::EQUAL),
-                        FilterValue::from($article->stock()),
+                        FilterValue::from((string) $article->stock()),
                     ),
                 ),
             ),
@@ -166,7 +166,7 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
                 new Filter(
                     FilterField::from('stock'),
                     FilterOperator::from(FilterOperator::GT),
-                    FilterValue::from($article->stock() - 1),
+                    FilterValue::from((string) ($article->stock() - 1)),
                 ),
             ),
             null,
@@ -188,7 +188,7 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
                 new Filter(
                     FilterField::from('stock'),
                     FilterOperator::from(FilterOperator::LT),
-                    FilterValue::from($article->stock() + 1),
+                    FilterValue::from((string) ($article->stock() + 1)),
                 ),
             ),
             null,
@@ -263,7 +263,7 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
         );
 
         $result = $this->repository->filter($criteria);
-        $this->assertEmpty( $result);
+        $this->assertEmpty($result);
     }
 
     public function test_non_existing_filter_should_return_no_result()
@@ -285,6 +285,6 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
         );
 
         $result = $this->repository->filter($criteria);
-        $this->assertEmpty( $result);
+        $this->assertEmpty($result);
     }
 }
