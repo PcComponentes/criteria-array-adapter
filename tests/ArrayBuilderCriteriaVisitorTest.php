@@ -287,4 +287,26 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
         $result = $this->repository->filter($criteria);
         $this->assertEmpty($result);
     }
+
+    public function test_not_equal_operator()
+    {
+        $article = ArticleObjectMother::random();
+        $this->repository->save($article);
+
+        $criteria = new Criteria(
+            new Filters(
+                new Filter(
+                    FilterField::from('stock'),
+                    FilterOperator::from(FilterOperator::NOT_EQUAL),
+                    FilterValue::from((string) ($article->stock() - 1)),
+                ),
+            ),
+            null,
+            null,
+            null,
+        );
+
+        $result = $this->repository->filter($criteria);
+        $this->assertEquals($article, $result[0]);
+    }
 }

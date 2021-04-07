@@ -55,6 +55,10 @@ class ArrayCriteriaVisitor implements FilterVisitorInterface
                         return $itemValue == self::cast($itemValue, $filter->value()->value());
                     }
 
+                    if (FilterOperator::NOT_EQUAL === $filter->operator()->value()) {
+                        return $itemValue != self::cast($itemValue, $filter->value()->value());
+                    }
+
                     if (FilterOperator::GT === $filter->operator()->value()) {
                         return $itemValue > self::cast($itemValue, $filter->value()->value());
                     }
