@@ -309,4 +309,28 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
         $result = $this->repository->filter($criteria);
         $this->assertEquals($article, $result[0]);
     }
+
+
+    public function test_in_operator()
+    {
+        $article = ArticleObjectMother::random();
+        $this->repository->save($article);
+
+        $criteria = new Criteria(
+            new Filters(
+                new Filter(
+                    FilterField::from('tags'),
+                    FilterOperator::from(FilterOperator::IN),
+                    FilterValue::from(ArticleObjectMother::TAG_INCLUDED),
+                ),
+            ),
+            null,
+            null,
+            null,
+        );
+
+        $result = $this->repository->filter($criteria);
+        $this->assertEquals($article, $result[0]);
+
+    }
 }
