@@ -333,4 +333,27 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
         $this->assertEquals($article, $result[0]);
 
     }
+
+    public function test_not_in_operator()
+    {
+        $article = ArticleObjectMother::random();
+        $this->repository->save($article);
+
+        $criteria = new Criteria(
+            new Filters(
+                new Filter(
+                    FilterField::from('tags'),
+                    FilterOperator::from(FilterOperator::NOT_IN),
+                    FilterValue::from(ArticleObjectMother::TAG_NOT_INCLUDED),
+                ),
+            ),
+            null,
+            null,
+            null,
+        );
+
+        $result = $this->repository->filter($criteria);
+        $this->assertEquals($article, $result[0]);
+
+    }
 }

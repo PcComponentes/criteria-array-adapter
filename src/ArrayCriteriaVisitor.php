@@ -74,6 +74,10 @@ class ArrayCriteriaVisitor implements FilterVisitorInterface
                     if (FilterOperator::IN === $filter->operator()->value()) {
                         return false !== in_array($filter->value()->value(), $itemValue);
                     }
+
+                    if (FilterOperator::NOT_IN === $filter->operator()->value()) {
+                        return true !== in_array($filter->value()->value(), $itemValue);
+                    }
                 }
 
                 return false;
