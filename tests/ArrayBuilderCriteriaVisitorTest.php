@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PcComponentes\CriteriaArrayAdapter\Tests;
 
+use Pccomponentes\Criteria\Domain\Criteria\FilterArrayValue;
 use PcComponentes\CriteriaArrayAdapter\Tests\Mocks\MemoryArticleRepository;
 use PcComponentes\CriteriaArrayAdapter\Tests\Mocks\ArticleObjectMother;
 use Pccomponentes\Criteria\Domain\Criteria\AndFilter;
@@ -314,14 +315,16 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
     public function test_in_operator()
     {
         $article = ArticleObjectMother::random();
+        $withNamePhone = ArticleObjectMother::withNamePhone();
         $this->repository->save($article);
+        $this->repository->save($withNamePhone);
 
         $criteria = new Criteria(
             new Filters(
                 new Filter(
-                    FilterField::from('tags'),
+                    FilterField::from('name'),
                     FilterOperator::from(FilterOperator::IN),
-                    FilterValue::from(ArticleObjectMother::TAG_INCLUDED),
+                    FilterArrayValue::from(['benito', 'Phone']),
                 ),
             ),
             null,
@@ -330,21 +333,23 @@ class ArrayBuilderCriteriaVisitorTest extends TestCase
         );
 
         $result = $this->repository->filter($criteria);
-        $this->assertEquals($article, $result[0]);
+        $this->assertEquals($withNamePhone, $result[1]);
 
     }
 
     public function test_not_in_operator()
     {
         $article = ArticleObjectMother::random();
+        $withNamePhone = ArticleObjectMother::withNamePhone();
         $this->repository->save($article);
+        $this->repository->save($withNamePhone);
 
         $criteria = new Criteria(
             new Filters(
                 new Filter(
-                    FilterField::from('tags'),
+                    FilterField::from('name'),
                     FilterOperator::from(FilterOperator::NOT_IN),
-                    FilterValue::from(ArticleObjectMother::TAG_NOT_INCLUDED),
+                    FilterArrayValue::from(['Phone']),
                 ),
             ),
             null,

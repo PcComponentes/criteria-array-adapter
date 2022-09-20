@@ -8,7 +8,7 @@ use PcComponentes\Ddd\Domain\Model\ValueObject\Uuid;
 class Article
 {
     private Uuid $id;
-    private string $name;
+    protected string $name;
     private float $stock;
     private \DateTimeInterface $date;
     private array $tags;
