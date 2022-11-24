@@ -47,7 +47,7 @@ class ArrayCriteriaVisitor implements FilterVisitorInterface
             static function ($item) use ($filter) {
                 if (\method_exists($item, $filter->field()->value())) {
                     $field = $filter->field()->value();
-                    $itemValue = \method_exists($item->$field(), 'value')
+                    $itemValue = true === \is_object($item->$field()) && \method_exists($item->$field(), 'value')
                         ? $item->$field()->value()
                         : $item->$field();
 
